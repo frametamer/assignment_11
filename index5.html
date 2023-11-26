@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Vue Exercise 5: Conditional Rendering</title>
+  <!-- Vue.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+  <style>
+    .completed {
+      text-decoration: line-through;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <h2>Incomplete Tasks</h2>
+    <ul>
+      <li v-for="(task, index) in incompleteTasks" :key="index">
+        <span :class="{ completed: task.completed }">{{ task.title }}</span>
+        <button @click="toggleComplete(index)">Complete</button>
+      </li>
+    </ul>
+
+    <h2>Completed Tasks</h2>
+    <ul>
+      <li v-for="(task, index) in completedTasks" :key="index">
+        <span :class="{ completed: task.completed }">{{ task.title }}</span>
+        <button @click="toggleComplete(index)">Incomplete</button>
+      </li>
+    </ul>
+
+    <form @submit.prevent="addTask">
+      <label for="newTask">Add New Task:</label>
+      <input type="text" id="newTask" v-model="newTask">
+      <button type="submit">Add Task</button>
+    </form>
+  </div>
+
+  <script>
+    new Vue({
+      el: '#app',
+      data: {
+        tasks: [
+          { title: 'Task 1', completed: false },
+          { title: 'Task 2', completed: true },
+          { title: 'Task 3', completed: false }
+        ],
+        newTask: ''
+      },
+      methods: {
+        toggleComplete(index) {
+          this.tasks[index].completed = !this.tasks[index].completed;
+        },
+        addTask() {
+          if (this.newTask.trim() !== '') {
+            this.tasks.push({ title: this.newTask, completed: false });
+            this.newTask = '';
+          }
+        }
+      },
+      computed: {
+        incompleteTasks() {
+          return this.tasks.filter(task => !task.completed);
+        },
+        completedTasks() {
+          return this.tasks.filter(task => task.completed);
+        }
+      }
+    });
+  </script>
+</body>
+</html>

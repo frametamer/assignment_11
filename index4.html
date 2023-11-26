@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Vue Exercise 4</title>
+  <!-- Vue.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+  <style>
+    /* styles_form.css */
+
+/* Add your CSS styles for form elements and validation messages here */
+form {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+button {
+  padding: 8px;
+  margin-bottom: 10px;
+}
+
+span {
+  color: red;
+  font-size: 14px;
+  display: block;
+  margin-top: 5px;
+}
+
+  </style>
+</head>
+<body>
+  <div id="app">
+    <form @submit.prevent="submitForm">
+      <div>
+        <label for="username">Username:</label>
+        <input type="text" id="username" v-model="username">
+        <span v-if="!username">Username is required.</span>
+      </div>
+      <div>
+        <label for="email">Email:</label>
+        <input type="email" id="email" v-model="email">
+        <span v-if="!isValidEmail(email)">Please enter a valid email.</span>
+      </div>
+      <div>
+        <label for="password">Password:</label>
+        <input type="password" id="password" v-model="password">
+        <span v-if="password.length < 6">Password must be at least 6 characters.</span>
+      </div>
+      <button type="submit" :disabled="!isValidForm">Submit</button>
+    </form>
+  </div>
+
+  <script>
+    new Vue({
+      el: '#app',
+      data: {
+        username: '',
+        email: '',
+        password: ''
+      },
+      methods: {
+        isValidEmail(email) {
+          // Basic email validation regex
+          const emailRegex = /\S+@\S+\.\S+/;
+          return emailRegex.test(email);
+        },
+        submitForm() {
+          if (this.isValidForm) {
+            // Process form submission (e.g., send data to server)
+            console.log('Form submitted:', this.username, this.email, this.password);
+          } else {
+            // Handle invalid form submission
+            console.log('Form data is invalid');
+          }
+        }
+      },
+      computed: {
+        isValidForm() {
+          return this.username && this.isValidEmail(this.email) && this.password.length >= 6;
+        }
+      }
+    });
+  </script>
+</body>
+</html>
